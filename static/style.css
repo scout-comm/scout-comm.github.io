@@ -161,31 +161,54 @@ body {
     padding: 0.5rem;
 }
 
-/* Demo grid (GIFs) */
-.demo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin: 1.5rem 0;
+/* Demos: SCoUT in action — fixed-size cells so 20v20 (smaller render) matches others */
+.demo-row-title {
+    font-size: 1.15rem;
+    color: #1E3A8A;
+    margin: 1.5rem 0 0.75rem 0;
+    font-weight: 600;
 }
+.demo-row-title:first-of-type { margin-top: 0; }
+.demo-row {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.demo-row-battle { grid-template-columns: repeat(4, 1fr); }
+.demo-row-pursuit { grid-template-columns: repeat(5, 1fr); }
 .demo-item {
     text-align: center;
 }
-.demo-item h4 {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 0.75rem;
+.demo-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
-.demo-gif {
-    max-width: 100%;
-    height: auto;
+.demo-gif-wrap {
+    aspect-ratio: 1;
+    min-height: 180px;
+    background: #f0f0f0;
     border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.demo-note {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    color: #666;
+.demo-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+@media (max-width: 900px) {
+    .demo-row-battle { grid-template-columns: repeat(2, 1fr); }
+    .demo-row-pursuit { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .demo-row-battle, .demo-row-pursuit { grid-template-columns: 1fr; }
 }
 
 /* Results tables */
@@ -239,6 +262,20 @@ body {
     color: #333;
     font-size: 1.25rem;
     margin: 2rem 0 0.75rem 0;
+}
+.results-figures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+.results-fig-item {
+    text-align: center;
+}
+.fig-caption {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {

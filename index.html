@@ -48,6 +48,17 @@
 
             <section id="results" class="section">
                 <h3>Results</h3>
+                <p>SCoUT maintains high win rates and elimination rates across Battle scales and strong catch rates across Pursuit scales; ablations show that both temporal grouping and counterfactual communication credit are critical.</p>
+                <div class="results-figures">
+                    <div class="results-fig-item">
+                        <img src="imgs/training_curves_combined.png" alt="Battle training curves" class="scaled-image" loading="lazy">
+                        <p class="fig-caption">Battle: training curves across 20v20, 64v64, 81v81, 100v100.</p>
+                    </div>
+                    <div class="results-fig-item">
+                        <img src="imgs/pursuit_scaling_summary.png" alt="Pursuit scaling summary" class="scaled-image" loading="lazy">
+                        <p class="fig-caption">Pursuit: catch rate and completion rate across scales.</p>
+                    </div>
+                </div>
 
                 <h4>MAgent Battle</h4>
                 <p class="table-caption">Win rate, elimination rate, milestone reach rates R<sub>50</sub>/R<sub>75</sub>, and decisiveness via TT<sub>50</sub>/TT<sub>75</sub> (20 evaluation seeds).</p>
@@ -135,18 +146,22 @@
             </section>
 
             <section id="demos" class="section">
-                <h3>Demos</h3>
-                <p>Trajectories from trained SCoUT policies (env render only).</p>
-                <div class="demo-grid">
-                    <div class="demo-item"><h4>Battle 20v20</h4><img src="imgs/battle_20v20_env.gif" alt="Battle 20v20" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Battle 64v64</h4><img src="imgs/battle_64v64_env.gif" alt="Battle 64v64" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Battle 81v81</h4><img src="imgs/battle_81v81_env.gif" alt="Battle 81v81" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Battle 100v100</h4><img src="imgs/battle_100v100_env.gif" alt="Battle 100v100" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Pursuit 20p-8e</h4><img src="imgs/pursuit_20p8e_env.gif" alt="Pursuit 20p-8e" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Pursuit 40p-16e</h4><img src="imgs/pursuit_40p16e_env.gif" alt="Pursuit 40p-16e" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Pursuit 60p-24e</h4><img src="imgs/pursuit_60p24e_env.gif" alt="Pursuit 60p-24e" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Pursuit 80p-32e</h4><img src="imgs/pursuit_80p32e_env.gif" alt="Pursuit 80p-32e" class="demo-gif" loading="lazy"></div>
-                    <div class="demo-item"><h4>Pursuit 100p-40e</h4><img src="imgs/pursuit_100p40e_env.gif" alt="Pursuit 100p-40e" class="demo-gif" loading="lazy"></div>
+                <h3>SCoUT in action</h3>
+                <p>Trajectories from trained SCoUT policies (env render only) across scales.</p>
+                <h4 class="demo-row-title">MAgent Battle</h4>
+                <div class="demo-row demo-row-battle">
+                    <div class="demo-item"><span class="demo-label">20v20</span><div class="demo-gif-wrap"><img src="imgs/battle_20v20_env.gif" alt="Battle 20v20" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">64v64</span><div class="demo-gif-wrap"><img src="imgs/battle_64v64_env.gif" alt="Battle 64v64" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">81v81</span><div class="demo-gif-wrap"><img src="imgs/battle_81v81_env.gif" alt="Battle 81v81" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">100v100</span><div class="demo-gif-wrap"><img src="imgs/battle_100v100_env.gif" alt="Battle 100v100" class="demo-gif" loading="lazy"></div></div>
+                </div>
+                <h4 class="demo-row-title">PettingZoo Pursuit</h4>
+                <div class="demo-row demo-row-pursuit">
+                    <div class="demo-item"><span class="demo-label">20p-8e</span><div class="demo-gif-wrap"><img src="imgs/pursuit_20p8e_env.gif" alt="Pursuit 20p-8e" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">40p-16e</span><div class="demo-gif-wrap"><img src="imgs/pursuit_40p16e_env.gif" alt="Pursuit 40p-16e" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">60p-24e</span><div class="demo-gif-wrap"><img src="imgs/pursuit_60p24e_env.gif" alt="Pursuit 60p-24e" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">80p-32e</span><div class="demo-gif-wrap"><img src="imgs/pursuit_80p32e_env.gif" alt="Pursuit 80p-32e" class="demo-gif" loading="lazy"></div></div>
+                    <div class="demo-item"><span class="demo-label">100p-40e</span><div class="demo-gif-wrap"><img src="imgs/pursuit_100p40e_env.gif" alt="Pursuit 100p-40e" class="demo-gif" loading="lazy"></div></div>
                 </div>
             </section>
 
