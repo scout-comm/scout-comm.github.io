@@ -169,6 +169,11 @@ body {
     font-weight: 600;
 }
 #demos .demo-row-title:first-of-type { margin-top: 0; }
+#demos .demo-row-title a {
+    color: inherit;
+    text-decoration: none;
+}
+#demos .demo-row-title a:hover { text-decoration: underline; }
 #demos .demo-row {
     display: grid;
     gap: 1rem;
@@ -208,7 +213,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* fill box so 20v20 (smaller source) scales up to same size */
+    object-fit: contain; /* show full frame so top label (e.g. 20v20) is not cut off */
     border-radius: 8px;
 }
 @media (max-width: 900px) {
