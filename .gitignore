@@ -1,0 +1,4 @@
+# Debug dumps from eval script (do not deploy to website)
+*.npz
+.DS_Store
+SETUP.md

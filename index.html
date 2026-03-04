@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCoUT: Scalable Communication via Utility-Guided Temporal Grouping</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="nav-content">
+                <h1>SCoUT</h1>
+                <ul>
+                    <li><a href="#abstract">Abstract</a></li>
+                    <li><a href="#methodology">Methodology</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#demos">Demos</a></li>
+                    <li><a href="#citation">BibTeX</a></li>
+                </ul>
+                <div class="external-links">
+                    <a href="#" class="button" id="paper-link" title="Paper link will be added after upload"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://github.com/scout-comm/scout" class="button" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content">
+            <div class="title-container">
+                <h1>SCoUT: Scalable Communication via Utility-Guided Temporal Grouping in Multi-Agent Reinforcement Learning</h1>
+            </div>
+
+            <section id="abstract" class="section">
+                <h3>Abstract</h3>
+                <p>
+                    Communication can improve coordination in partially observed multi-agent reinforcement learning (MARL), but learning <em>when</em> and <em>who</em> to communicate with requires choosing among many possible sender-recipient pairs, and the effect of any single message on future reward is hard to isolate. We introduce <strong>SCoUT</strong> (<strong>S</strong>calable <strong>Co</strong>mmunication via <strong>U</strong>tility-guided <strong>T</strong>emporal grouping), which addresses both these challenges via temporal and agent abstraction within traditional MARL. During training, SCoUT resamples <em>soft</em> agent groups every <i>K</i> environment steps (macro-steps) via Gumbel-Softmax; these groups are latent clusters that induce an affinity used as a differentiable prior over recipients. Using the same assignments, a group-aware critic predicts values for each agent group and maps them to per-agent baselines through the same soft assignments, reducing critic complexity and variance. Each agent is trained with a three-headed policy: environment action, send decision, and recipient selection. To obtain precise communication learning signals, we derive counterfactual communication advantages by analytically removing each sender's contribution from the recipient's aggregated messages. This counterfactual computation enables precise credit assignment for both send and recipient-selection decisions. At execution time, all centralized training components are discarded and only the per-agent policy is run, preserving decentralized execution. Experiments on large-scale benchmarks show that SCoUT learns targeted communication and remains effective in large scenarios, while prior methods degrade as the population grows. Finally, ablations confirm that temporal grouping and counterfactual communication credit are both critical for scalability.
+                </p>
+            </section>
+
+            <section id="methodology" class="section">
+                <h3>Methodology</h3>
+                <p>SCoUT learns both <em>whom</em> to talk to (via a soft grouping policy over agent descriptors) and <em>what</em> to send (via a shared descriptor and message pool), using a centralized PPO with group-aware value baselines and counterfactual advantages for communication actions.</p>
+                <div class="image-container">
+                    <img src="imgs/icml2026-arch.png" alt="SCoUT architecture" class="scaled-image" loading="lazy">
+                </div>
+            </section>
+
+            <section id="results" class="section">
+                <h3>Results</h3>
+
+                <h4>MAgent Battle</h4>
+                <p class="table-caption">Win rate, elimination rate, milestone reach rates R<sub>50</sub>/R<sub>75</sub>, and decisiveness via TT<sub>50</sub>/TT<sub>75</sub> (20 evaluation seeds).</p>
+                <div class="table-wrapper">
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="header-row">
+                                <th>Method</th>
+                                <th colspan="4">Win rate (%)</th>
+                                <th colspan="4">Elimination rate (%)</th>
+                            </tr>
+                            <tr class="subheader-row">
+                                <th></th>
+                                <th>20v20</th><th>64v64</th><th>81v81</th><th>100v100</th>
+                                <th>20v20</th><th>64v64</th><th>81v81</th><th>100v100</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SCoUT</td><td class="best">100.0±0.0</td><td class="best">100.0±0.0</td><td class="best">100.0±0.0</td><td class="best">100.0±0.0</td><td class="best">95±6</td><td class="best">98±4</td><td class="best">99±3</td><td class="best">99±3</td></tr>
+                            <tr><td>ExpoComm</td><td>0.0±0.0</td><td>95.0±4.9</td><td>96.0±4.2</td><td>96.4±2.7</td><td>11±16</td><td>94±12</td><td>72±16</td><td>75±21</td></tr>
+                            <tr><td>ExpoComm-Static</td><td>0.0±0.0</td><td>0.0±0.0</td><td>60.0±11.0</td><td>65.0±10.7</td><td>3±8</td><td>1±2</td><td>57±30</td><td>36±10</td></tr>
+                            <tr><td>IDQN</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0.0±0.0</td><td>0</td><td>0</td><td>7±2</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-wrapper">
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="header-row"><th>Method</th><th colspan="4">Milestone reach rate (%) R<sub>50</sub> / R<sub>75</sub></th><th colspan="4">TT<sub>50</sub> / TT<sub>75</sub> (steps; horizon=200)</th></tr>
+                            <tr class="subheader-row"><th></th><th>20v20</th><th>64v64</th><th>81v81</th><th>100v100</th><th>20v20</th><th>64v64</th><th>81v81</th><th>100v100</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SCoUT</td><td class="best">100/100</td><td class="best">100/100</td><td class="best">100/100</td><td class="best">100/100</td><td class="best">24±1/30±1</td><td class="best">24±2/29±1</td><td class="best">27±3/32±2</td><td class="best">31±4/39±2</td></tr>
+                            <tr><td>ExpoComm</td><td>0/0</td><td>95/95</td><td>90/55</td><td>80/60</td><td>N/A</td><td>59±20/81±24</td><td>100±44/182±14</td><td>101±21/160±23</td></tr>
+                            <tr><td>ExpoComm-Static</td><td>0/0</td><td>0/0</td><td>60/60</td><td>10/0</td><td>N/A</td><td>N/A</td><td>85±7/153±20</td><td>N/A</td></tr>
+                            <tr><td>IDQN</td><td>0/0</td><td>0/0</td><td>0/0</td><td>0/0</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Pursuit (PettingZoo SISL)</h4>
+                <p class="table-caption">Catch%, Done%, and milestone times TT<sub>50</sub>/TT<sub>75</sub> (20 evaluation seeds; horizon=500). For milestone rows, each entry is TT<sub>k</sub> (R<sub>k</sub>), where R<sub>k</sub> is the % of episodes reaching the k% capture milestone.</p>
+                <div class="table-wrapper">
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="header-row"><th>Method</th><th colspan="5">Catch rate (Catch%)</th><th colspan="5">Completion rate (Done%)</th></tr>
+                            <tr class="subheader-row"><th></th><th>20P-8E</th><th>40P-16E</th><th>60P-24E</th><th>80P-32E</th><th>100P-40E</th><th>20P-8E</th><th>40P-16E</th><th>60P-24E</th><th>80P-32E</th><th>100P-40E</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SCoUT</td><td class="best">94±10</td><td class="best">93±8</td><td class="best">89±5</td><td class="best">90±6</td><td class="best">88±5</td><td class="best">70</td><td class="best">50</td><td class="best">0</td><td class="best">5</td><td class="best">0</td></tr>
+                            <tr><td>w/o counterfactual</td><td>72±21</td><td>18±20</td><td>28±27</td><td>29±13</td><td>58±26</td><td>20</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>w/o grouping</td><td>57±18</td><td>10±9</td><td>14±6</td><td>37±10</td><td>41±10</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                            <tr><td>ExpoComm (Peer-n=7)</td><td>86±14</td><td>58±14</td><td>62±12</td><td>72±13</td><td>69±10</td><td>40</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-wrapper">
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="header-row"><th>Method</th><th colspan="5">TT<sub>50</sub> (steps; horizon=500) — R<sub>50</sub>% in parentheses</th></tr>
+                            <tr class="subheader-row"><th></th><th>20P-8E</th><th>40P-16E</th><th>60P-24E</th><th>80P-32E</th><th>100P-40E</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SCoUT</td><td class="best">74±78 (100)</td><td class="best">143±52 (100)</td><td class="best">72±19 (100)</td><td class="best">98±38 (100)</td><td class="best">70±18 (100)</td></tr>
+                            <tr><td>w/o counterfactual</td><td>173±149 (90)</td><td>N/A (15)</td><td>N/A (20)</td><td>N/A (5)</td><td>173±86 (55)</td></tr>
+                            <tr><td>w/o grouping</td><td>212±184 (80)</td><td>N/A (0)</td><td>N/A (0)</td><td>N/A (15)</td><td>N/A (20)</td></tr>
+                            <tr><td>ExpoComm (Peer-n=7)</td><td>125±73 (100)</td><td>191±114 (80)</td><td>307±80 (85)</td><td>184±93 (100)</td><td>137±66 (95)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-wrapper">
+                    <table class="paper-table">
+                        <thead>
+                            <tr class="header-row"><th>Method</th><th colspan="5">TT<sub>75</sub> (steps; horizon=500) — R<sub>75</sub>% in parentheses</th></tr>
+                            <tr class="subheader-row"><th></th><th>20P-8E</th><th>40P-16E</th><th>60P-24E</th><th>80P-32E</th><th>100P-40E</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>SCoUT</td><td class="best">138±82 (95)</td><td class="best">227±65 (95)</td><td class="best">139±64 (100)</td><td class="best">212±79 (100)</td><td class="best">149±41 (100)</td></tr>
+                            <tr><td>w/o counterfactual</td><td>214±136 (65)</td><td>N/A (0)</td><td>N/A (15)</td><td>N/A (0)</td><td>N/A (35)</td></tr>
+                            <tr><td>w/o grouping</td><td>N/A (30)</td><td>N/A (0)</td><td>N/A (0)</td><td>N/A (0)</td><td>N/A (0)</td></tr>
+                            <tr><td>ExpoComm (Peer-n=7)</td><td>234±114 (80)</td><td>N/A (15)</td><td>N/A (20)</td><td>N/A (40)</td><td>425±59 (50)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="demos" class="section">
+                <h3>Demos</h3>
+                <p>Trajectories from trained SCoUT policies (env render only).</p>
+                <div class="demo-grid">
+                    <div class="demo-item"><h4>Battle 20v20</h4><img src="imgs/battle_20v20_env.gif" alt="Battle 20v20" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Battle 64v64</h4><img src="imgs/battle_64v64_env.gif" alt="Battle 64v64" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Battle 81v81</h4><img src="imgs/battle_81v81_env.gif" alt="Battle 81v81" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Battle 100v100</h4><img src="imgs/battle_100v100_env.gif" alt="Battle 100v100" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Pursuit 20p-8e</h4><img src="imgs/pursuit_20p8e_env.gif" alt="Pursuit 20p-8e" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Pursuit 40p-16e</h4><img src="imgs/pursuit_40p16e_env.gif" alt="Pursuit 40p-16e" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Pursuit 60p-24e</h4><img src="imgs/pursuit_60p24e_env.gif" alt="Pursuit 60p-24e" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Pursuit 80p-32e</h4><img src="imgs/pursuit_80p32e_env.gif" alt="Pursuit 80p-32e" class="demo-gif" loading="lazy"></div>
+                    <div class="demo-item"><h4>Pursuit 100p-40e</h4><img src="imgs/pursuit_100p40e_env.gif" alt="Pursuit 100p-40e" class="demo-gif" loading="lazy"></div>
+                </div>
+            </section>
+
+            <section id="citation" class="section">
+                <h3>BibTeX</h3>
+                <p><em>To be added upon publication.</em></p>
+                <!-- After acceptance, add:
+                <pre><code>@inproceedings{scout2025,
+                  title     = {SCoUT: Scalable Communication via Utility-Guided Temporal Grouping in Multi-Agent Reinforcement Learning},
+                  author    = {...},
+                  booktitle = {...},
+                  year      = {2025},
+                  url       = {https://arxiv.org/abs/...}
+                }</code></pre>
+                -->
+            </section>
+        </main>
+    </div>
+    <div class="video-popup">
+        <div class="video-popup-content">
+            <button class="close-popup">&times;</button>
+            <video controls><source src="" type="video/mp4"></video>
+        </div>
+    </div>
+    <script src="static/script.js"></script>
+</body>
+</html>
