@@ -161,54 +161,63 @@ body {
     padding: 0.5rem;
 }
 
-/* Demos: SCoUT in action — fixed-size cells so 20v20 (smaller render) matches others */
-.demo-row-title {
+/* Demos: SCoUT in action — one row Battle (4), one row Pursuit (5); equal-size boxes */
+#demos .demo-row-title {
     font-size: 1.15rem;
     color: #1E3A8A;
     margin: 1.5rem 0 0.75rem 0;
     font-weight: 600;
 }
-.demo-row-title:first-of-type { margin-top: 0; }
-.demo-row {
+#demos .demo-row-title:first-of-type { margin-top: 0; }
+#demos .demo-row {
     display: grid;
     gap: 1rem;
     margin-bottom: 2rem;
+    width: 100%;
 }
-.demo-row-battle { grid-template-columns: repeat(4, 1fr); }
-.demo-row-pursuit { grid-template-columns: repeat(5, 1fr); }
-.demo-item {
+#demos .demo-row-battle {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+#demos .demo-row-pursuit {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+#demos .demo-item {
     text-align: center;
+    min-width: 0;
 }
-.demo-label {
+#demos .demo-label {
     display: block;
     font-size: 0.9rem;
     color: #555;
     margin-bottom: 0.5rem;
     font-weight: 500;
 }
-.demo-gif-wrap {
-    aspect-ratio: 1;
-    min-height: 180px;
+#demos .demo-gif-wrap {
+    width: 100%;
+    padding-bottom: 100%; /* square */
+    height: 0;
+    position: relative;
     background: #f0f0f0;
     border-radius: 8px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.demo-gif {
+#demos .demo-gif-wrap .demo-gif {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover; /* fill box so 20v20 (smaller source) scales up to same size */
     border-radius: 8px;
 }
 @media (max-width: 900px) {
-    .demo-row-battle { grid-template-columns: repeat(2, 1fr); }
-    .demo-row-pursuit { grid-template-columns: repeat(2, 1fr); }
+    #demos .demo-row-battle { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #demos .demo-row-pursuit { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-    .demo-row-battle, .demo-row-pursuit { grid-template-columns: 1fr; }
+    #demos .demo-row-battle,
+    #demos .demo-row-pursuit { grid-template-columns: 1fr; }
 }
 
 /* Results tables */
